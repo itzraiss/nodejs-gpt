@@ -39,7 +39,7 @@ export default class BingAIClient {
         } else {
             this.options = {
                 ...options,
-                host: options.host || 'https://www.bing.com',
+                host: options.host || 'https://copilot.microsoft.com',
                 xForwardedFor: this.constructor.getValidIPv4(options.xForwardedFor),
                 features: {
                     genImage: options?.features?.genImage || false,
@@ -79,13 +79,13 @@ export default class BingAIClient {
     async createNewConversation() {
         this.headers = {
             accept: 'application/json',
-            'accept-language': 'en-US,en;q=0.9',
+            'accept-language': 'pt-BR,pt;q=0.9,en;q=0.8,en-GB;q=0.7,en-US;q=0.6',
             'content-type': 'application/json',
-            'sec-ch-ua': '"Microsoft Edge";v="113", "Chromium";v="113", "Not-A.Brand";v="24"',
+            'sec-ch-ua': '"Chromium";v="130", "Microsoft Edge";v="130", "Not?A_Brand";v="99"',
             'sec-ch-ua-arch': '"x86"',
             'sec-ch-ua-bitness': '"64"',
             'sec-ch-ua-full-version': '"113.0.1774.50"',
-            'sec-ch-ua-full-version-list': '"Microsoft Edge";v="113.0.1774.50", "Chromium";v="113.0.5672.127", "Not-A.Brand";v="24.0.0.0"',
+            'sec-ch-ua-full-version-list': '"Chromium";v="130.0.6723.19", "Microsoft Edge";v="130.0.2849.13", "Not?A_Brand";v="99.0.0.0"',
             'sec-ch-ua-mobile': '?0',
             'sec-ch-ua-model': '""',
             'sec-ch-ua-platform': '"Windows"',
@@ -94,10 +94,10 @@ export default class BingAIClient {
             'sec-fetch-mode': 'cors',
             'sec-fetch-site': 'same-origin',
             'sec-ms-gec': genRanHex(64).toUpperCase(),
-            'sec-ms-gec-version': '1-115.0.1866.1',
+            'sec-ms-gec-version': '1-130.0.2849.13',
             'x-ms-client-request-id': crypto.randomUUID(),
             'x-ms-useragent': 'azsdk-js-api-client-factory/1.0.0-beta.1 core-rest-pipeline/1.10.0 OS/Win32',
-            'user-agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/113.0.0.0 Safari/537.36 Edg/113.0.1774.50',
+            'user-agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/130.0.0.0 Safari/537.36 Edg/130.0.0.0',
             cookie: this.options.cookies || (this.options.userToken ? `_U=${this.options.userToken}` : undefined),
             Referer: 'https://www.bing.com/search?q=Bing+AI&showconv=1',
             'Referrer-Policy': 'origin-when-cross-origin',
