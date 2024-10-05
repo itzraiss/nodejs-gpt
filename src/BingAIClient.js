@@ -340,7 +340,6 @@ export default class BingAIClient {
                         'nlu_direct_response_filter',
                         'deepleo',
                         'disable_emoji_spoken_text',
-                        'responsible_ai_policy_235',
                         'enablemm',
                         toneOption,
                         'dtappid',
@@ -461,17 +460,15 @@ export default class BingAIClient {
                             return;
                         }
                         // get the difference between the current text and the previous text
-                        const difference = messages[0].messageType ? updatedText : updatedText.substring(replySoFar.length);
-                        onProgress(difference, messages[0].messageType);
+                        const difference = updatedText.substring(replySoFar.length);
+                        onProgress(difference);
                         if (updatedText.trim().endsWith(stopToken)) {
                             stopTokenFound = true;
                             // remove stop token from updated text
                             replySoFar = updatedText.replace(stopToken, '').trim();
                             return;
                         }
-                        if (!messages[0].messageType) {
-                            replySoFar = updatedText;
-                        }
+                        replySoFar = updatedText;
                         return;
                     }
                     case 2: {
