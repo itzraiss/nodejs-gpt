@@ -100,7 +100,7 @@ export default class BingAIClient {
             'user-agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/130.0.0.0 Safari/537.36 Edg/130.0.0.0',
             cookie: this.options.cookies || (this.options.userToken ? `_U=${this.options.userToken}` : undefined),
             'ect': '4g',
-            Referer: 'https://www.bing.com/search?q=Bing+AI&showconv=1','https://www.bing.com/chat?form=NTPCHB',
+            Referer: 'https://www.bing.com/chat?form=NTPCHB',
             'Referrer-Policy': 'origin-when-cross-origin',
             // Workaround for request being blocked due to geolocation
             'x-forwarded-for': '1.1.1.1', // 1.1.1.1 seems to no longer work.
