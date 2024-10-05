@@ -39,7 +39,7 @@ export default class BingAIClient {
         } else {
             this.options = {
                 ...options,
-                host: options.host || 'https://copilot.microsoft.com',
+                host: options.host || 'https://www.bing.com',
                 xForwardedFor: this.constructor.getValidIPv4(options.xForwardedFor),
                 features: {
                     genImage: options?.features?.genImage || false,
