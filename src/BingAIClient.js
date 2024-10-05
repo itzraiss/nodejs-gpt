@@ -207,7 +207,7 @@ export default class BingAIClient {
         } = opts;
 
         const {
-            toneStyle = 'balanced', // or creative, precise, fast
+            toneStyle = 'creative', // or creative, precise, fast
             invocationId = 0,
             systemMessage,
             context,
