@@ -96,13 +96,14 @@ export default class BingAIClient {
             'sec-ms-gec': genRanHex(64).toUpperCase(),
             'sec-ms-gec-version': '1-130.0.2849.13',
             'x-ms-client-request-id': crypto.randomUUID(),
-            'x-ms-useragent': 'azsdk-js-api-client-factory/1.0.0-beta.1 core-rest-pipeline/1.10.0 OS/Win32',
+            'x-ms-useragent': 'azsdk-js-api-client-factory/1.0.0-beta.1 core-rest-pipeline/1.16.0 OS/Windows',
             'user-agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/130.0.0.0 Safari/537.36 Edg/130.0.0.0',
             cookie: this.options.cookies || (this.options.userToken ? `_U=${this.options.userToken}` : undefined),
-            Referer: 'https://www.bing.com/search?q=Bing+AI&showconv=1',
+            'ect': '4g',
+            Referer: 'https://www.bing.com/search?q=Bing+AI&showconv=1','https://www.bing.com/chat?form=NTPCHB',
             'Referrer-Policy': 'origin-when-cross-origin',
             // Workaround for request being blocked due to geolocation
-            // 'x-forwarded-for': '1.1.1.1', // 1.1.1.1 seems to no longer work.
+            'x-forwarded-for': '1.1.1.1', // 1.1.1.1 seems to no longer work.
             ...(this.options.xForwardedFor ? { 'x-forwarded-for': this.options.xForwardedFor } : {}),
         };
         // filter undefined values
