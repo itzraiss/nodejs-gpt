@@ -104,7 +104,7 @@ export default class BingAIClient {
             Referer: 'https://www.bing.com/chat?form=NTPCHB',
             'Referrer-Policy': 'origin-when-cross-origin',
             // Workaround for request being blocked due to geolocation
-            'x-forwarded-for': '192.168.1.1', // 1.1.1.1 seems to no longer work.
+            'x-forwarded-for': '13.104.0.0/14', // 1.1.1.1 seems to no longer work.
             ...(this.options.xForwardedFor ? { 'x-forwarded-for': this.options.xForwardedFor } : {}),
         };
         // filter undefined values
@@ -120,6 +120,7 @@ export default class BingAIClient {
         }
         const response = await fetch(`${this.options.host}/turing/conversation/create?bundleVersion=1.1816.0`, fetchOptions);
         const body = await response.text();
+        console.log('Server Response:', body);
         try {
             const res = JSON.parse(body);
             res.encryptedConversationSignature = response.headers.get('x-sydney-encryptedconversationsignature') ?? null;
