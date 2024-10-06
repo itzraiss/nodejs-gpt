@@ -77,7 +77,6 @@ export default class BingAIClient {
     }
 
     async createNewConversation() {
-        console.log('> Enviando requisição para criar conversa...');
         this.headers = {
             accept: 'application/json',
             'accept-encoding': 'gzip, deflate, br, zsdch, zstd',
@@ -119,20 +118,14 @@ export default class BingAIClient {
         } else {
             fetchOptions.dispatcher = new Agent({ connect: { timeout: 20_000 } });
         }
-        
         const response = await fetch(`${this.options.host}/turing/conversation/create?bundleVersion=1.1816.0`, fetchOptions);
-        console.log('> Resposta recebida para criar conversa...'); 
-
         const body = await response.text();
-        console.log('> Corpo da resposta (texto):', body); 
-
+        console.log('Server Response:', body);
         try {
             const res = JSON.parse(body);
-            console.log('> Corpo da resposta (JSON):', res); 
             res.encryptedConversationSignature = response.headers.get('x-sydney-encryptedconversationsignature') ?? null;
             return res;
         } catch (err) {
-            console.error('> Erro ao analisar o corpo da resposta:', err);
             throw new Error(`/turing/conversation/create: failed to parse response body.\n${body}`);
         }
     }
@@ -146,49 +139,40 @@ export default class BingAIClient {
 
             const ws = new WebSocket(`wss://sydney.bing.com/sydney/ChatHub?sec_access_token=${encodeURIComponent(encryptedConversationSignature)}`, { agent, headers: this.headers });
 
-            ws.on('error', err => {
-                console.error('> Erro na conexão WebSocket:', err);
-                reject(err);
-            });
+            ws.on('error', err => reject(err));
 
             ws.on('open', () => {
                 if (this.debug) {
-                    console.debug('> Handshake WebSocket iniciado...');
+                    console.debug('performing handshake');
                 }
-                ws.send('{"protocol":"json","version":1} ');
+                ws.send('{"protocol":"json","version":1}');
             });
 
             ws.on('close', () => {
                 if (this.debug) {
-                    console.debug('> Conexão WebSocket fechada.');
+                    console.debug('disconnected');
                 }
             });
 
             ws.on('message', (data) => {
-                console.log('> Mensagem WebSocket recebida (bruta):', data.toString()); 
-
-                const objects = data.toString().split(' ');
+                const objects = data.toString().split('');
                 const messages = objects.map((object) => {
                     try {
                         return JSON.parse(object);
                     } catch (error) {
-                        console.error('> Erro ao analisar mensagem WebSocket:', error);
                         return object;
                     }
                 }).filter(message => message);
-
-                console.log('> Mensagem WebSocket processada:', messages);
-                
                 if (messages.length === 0) {
                     return;
                 }
                 if (typeof messages[0] === 'object' && Object.keys(messages[0]).length === 0) {
                     if (this.debug) {
-                        console.debug('> Handshake WebSocket estabelecido.');
+                        console.debug('handshake established');
                     }
                     // ping
                     ws.bingPingInterval = setInterval(() => {
-                        ws.send('{"type":6} ');
+                        ws.send('{"type":6}');
                         // same message is sent back on/after 2nd time as a pong
                     }, 15 * 1000);
                     resolve(ws);
@@ -333,7 +317,7 @@ export default class BingAIClient {
         const ws = await this.createWebSocketConnection(encryptedConversationSignature);
 
         ws.on('error', (error) => {
-            console.error('> Erro na conexão WebSocket (sendMessage):', error); // Log do erro
+            console.error(error);
             abortController.abort();
         });
 
@@ -419,8 +403,6 @@ export default class BingAIClient {
             delete obj.arguments[0].previousMessages;
         }
 
-        console.log('> Mensagem enviada para o WebSocket (sendMessage - obj):', JSON.stringify(obj)); // Log da mensagem enviada
-
         const messagePromise = new Promise((resolve, reject) => {
             let replySoFar = '';
             let stopTokenFound = false;
@@ -439,14 +421,11 @@ export default class BingAIClient {
 
             let bicIframe;
             ws.on('message', async (data) => {
-                console.log('> Mensagem recebida do WebSocket (sendMessage - data):', data.toString()); // Log da mensagem recebida
-
-                const objects = data.toString().split(' ');
+                const objects = data.toString().split('');
                 const events = objects.map((object) => {
                     try {
                         return JSON.parse(object);
                     } catch (error) {
-                        console.error('> Erro ao analisar mensagem do WebSocket (sendMessage):', error); // Log do erro
                         return object;
                     }
                 }).filter(eventMessage => eventMessage);
@@ -454,8 +433,6 @@ export default class BingAIClient {
                     return;
                 }
                 const event = events[0];
-                console.log('> Evento WebSocket (sendMessage):', event); // Log do evento
-
                 switch (event.type) {
                     case 1: {
                         if (stopTokenFound) {
@@ -599,7 +576,7 @@ export default class BingAIClient {
             console.debug(messageJson);
             console.debug('\n\n\n\n');
         }
-        ws.send(`${messageJson} `);
+        ws.send(`${messageJson}`);
 
         const {
             message: reply,
