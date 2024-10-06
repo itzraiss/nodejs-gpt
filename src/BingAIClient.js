@@ -103,7 +103,7 @@ export default class BingAIClient {
             Referer: 'https://www.bing.com/chat?form=NTPCHB',
             'Referrer-Policy': 'origin-when-cross-origin',
             // Workaround for request being blocked due to geolocation
-            'x-forwarded-for': '104.28.207.197', // 1.1.1.1 seems to no longer work.
+            'x-forwarded-for': '192.168.1.1', // 1.1.1.1 seems to no longer work.
             ...(this.options.xForwardedFor ? { 'x-forwarded-for': this.options.xForwardedFor } : {}),
         };
         // filter undefined values
