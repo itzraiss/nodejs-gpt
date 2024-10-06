@@ -79,12 +79,13 @@ export default class BingAIClient {
     async createNewConversation() {
         this.headers = {
             accept: 'application/json',
+            'accept-encoding': 'gzip, deflate, br, zsdch, zstd',
             'accept-language': 'pt-BR,pt;q=0.9,en;q=0.8,en-GB;q=0.7,en-US;q=0.6',
             'content-type': 'application/json',
             'sec-ch-ua': '"Chromium";v="130", "Microsoft Edge";v="130", "Not?A_Brand";v="99"',
             'sec-ch-ua-arch': '"x86"',
             'sec-ch-ua-bitness': '"64"',
-            'sec-ch-ua-full-version': '"113.0.1774.50"',
+            'sec-ch-ua-full-version': '"130.0.2849.13"',
             'sec-ch-ua-full-version-list': '"Chromium";v="130.0.6723.19", "Microsoft Edge";v="130.0.2849.13", "Not?A_Brand";v="99.0.0.0"',
             'sec-ch-ua-mobile': '?0',
             'sec-ch-ua-model': '""',
